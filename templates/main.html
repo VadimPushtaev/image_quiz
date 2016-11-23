@@ -1,0 +1,65 @@
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script>
+    function refresh_img($img) {
+      $img.each(function() {
+        $(this).attr('src', '/random_image?_=' + (new Date()).getTime() + Math.random());
+      });
+    }
+
+    $(document).ready(function() {
+      refresh_img($('img'));
+
+      $('img').click(function() {
+        refresh_img($(this));
+      });
+
+      $('#upload').submit(function(e) {
+        e.preventDefault();
+
+        var input = $(this).find('input');
+        $.get('/upload', {'url': input.val()});
+
+        input.val('');
+      });
+    });
+  </script>
+  <style>
+    table {
+      width: 100%;
+    }
+    img {
+      height: 400px;
+      cursor: pointer;
+    }
+    td {
+      text-align: right;
+    }
+    td:first-child {
+      text-align: left;
+    }
+    div {
+      text-align: center;
+    }
+    input {
+      width: 1000px;  
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td><img src=""></td>
+      <td><img src=""></td>
+    </tr>
+    <tr>
+      <td><img src=""></td>
+      <td><img src=""></td>
+    </tr>
+  </table>
+  <div>
+    <form id="upload">
+      <input type="text">
+    </form>
+  </div>
+</body>
