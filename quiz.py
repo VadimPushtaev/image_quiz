@@ -1,7 +1,9 @@
+from __future__ import unicode_literals
+
 from flask import (
   Flask,
   render_template,
-  send_file,
+  jsonify,
   request
 )
 
@@ -32,17 +34,15 @@ def upload():
   with open('images/' + name, 'wb') as output:
     output.write(image_file.read())
   
-  print name
-
   return name
 
 @app.route("/random_image")
 def random_image():
   image = random.choice(images())
-  return send_file('images/' + image.filename, mimetype=image.mimetype)
+  return jsonify(filename=image.filename, mimetype=image.mimetype)
 
 def images():
-  return [Image.create_from_file(f) for f in os.listdir('images')]
+  return [Image.create_from_file(f) for f in os.listdir('images') if not f.startswith('.')]
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
